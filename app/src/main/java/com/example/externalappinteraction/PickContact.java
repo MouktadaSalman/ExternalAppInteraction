@@ -41,7 +41,10 @@ public class PickContact extends AppCompatActivity {
         phone = findViewById(R.id.phoneView);
         more = findViewById(R.id.moreButton);
         pickContact = findViewById(R.id.pickContact);
-
+        name.setVisibility(View.INVISIBLE);
+        email.setVisibility(View.INVISIBLE);
+        more.setVisibility(View.INVISIBLE);
+        phone.setVisibility(View.INVISIBLE);
 
     }
 
@@ -135,6 +138,5 @@ public class PickContact extends AppCompatActivity {
         finally {
             cursor.close();
         }
-
     }
 }
