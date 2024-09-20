@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,6 +25,68 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        Button call = findViewById(R.id.callButton);
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callButtonClicked();
+            }
+        });
+
+        Button viewMap = findViewById(R.id.viewMap);
+
+        viewMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewMapButtonClicked();
+            }
+        });
+
+        Button sendText = findViewById(R.id.sendText);
+
+        sendText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendTextButtonClicked();
+            }
+        });
+
+        Button sendEmail = findViewById(R.id.sendEmail);
+
+        sendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendEmailButtonClicked();
+            }
+        });
+
+        Button viewWeb = findViewById(R.id.viewWeb);
+
+        viewWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewWebButtonClicked();
+            }
+        });
+
+        Button thumbNailActivity = findViewById(R.id.thumbNailActivity);
+        thumbNailActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ThumbNailCapture.class);
+                startActivity(intent);
+            }
+        });
+
+        Button pickContactActivity = findViewById(R.id.contactActivity);
+        pickContactActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PickContact.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void callButtonClicked() {
