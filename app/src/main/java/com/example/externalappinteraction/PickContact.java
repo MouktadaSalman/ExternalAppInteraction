@@ -1,21 +1,27 @@
 package com.example.externalappinteraction;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
 
 public class PickContact extends AppCompatActivity {
+    private static final int REQUEST_READ_CONTACT_PERMISSION = 3;
     int contactId;
     Button pickContact;
     Button more;
@@ -41,6 +47,35 @@ public class PickContact extends AppCompatActivity {
         phone = findViewById(R.id.phoneView);
         more = findViewById(R.id.moreButton);
         pickContact = findViewById(R.id.pickContact);
+
+        name.setVisibility(View.INVISIBLE);
+        email.setVisibility(View.INVISIBLE);
+        phone.setVisibility(View.INVISIBLE);
+        more.setVisibility(View.INVISIBLE);
+
+        pickContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickContactButtonClicked();
+            }
+        });
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.READ_CONTACTS)
+                        != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(PickContact.this,
+                            new String[]{Manifest.permission.READ_CONTACTS},
+                            REQUEST_READ_CONTACT_PERMISSION);
+
+                }
+                else{
+                    morButtonClicked();
+                }
+            }
+        });
 
 
     }
@@ -136,5 +171,19 @@ public class PickContact extends AppCompatActivity {
             cursor.close();
         }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults){
+             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+             if(requestCode==REQUEST_READ_CONTACT_PERMISSION){
+                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                     Toast.makeText(PickContact.this, "Contact Reading Permission Granted",
+                             Toast.LENGTH_SHORT).show();
+                     morButtonClicked();
+                 }
+             }
     }
 }
